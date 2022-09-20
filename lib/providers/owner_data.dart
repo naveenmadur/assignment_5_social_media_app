@@ -16,6 +16,5 @@ class OwnerData extends ChangeNotifier{
       owner.add(Owner.fromJson(item['owner']));
     }
     ownerList = owner;
-    print(ownerList[1].firstName);
   }
 }

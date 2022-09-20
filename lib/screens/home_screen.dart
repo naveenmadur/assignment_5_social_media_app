@@ -4,6 +4,7 @@ import '../widgets/story.dart';
 import '../widgets/posts.dart';
 import '../providers/user_posts.dart';
 import 'package:provider/provider.dart';
+import '../constants.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key, required this.showBookmarks}) : super(key: key);
@@ -25,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final post = widget.showBookmarks
-        ? Provider.of<UserPosts>(context, listen: false).bookmarkedPost
+        ? Provider.of<UserPosts>(context, listen: false).bookmark()
         : Provider.of<UserPosts>(context, listen: false).postList;
     final user = Provider.of<OwnerData>(context, listen: false).ownerList;
     return SingleChildScrollView(
@@ -33,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         children: [
           SizedBox(
-              height: MediaQuery.of(context).size.height / 8,
+              height: MediaQuery.of(context).size.height / 7,
               child: FutureBuilder<void>(
                 future: _fetchOwnerData(),
                 builder:
@@ -59,20 +60,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     return ListView.builder(
                       shrinkWrap: true,
                       itemBuilder: (context, index) => Posts(
-                        index: index,
-                          id: post[index].id.toString(),
-                          imageUrl: post[index].image.toString(),
-                          likes: post[index].likes.toString(),
-                          userName: post[index].owner!.firstName.toString() +
-                              post[index].owner!.lastName.toString(),
-                          userPfp: post[index].owner!.picture.toString(),
-                          ),
+                        postData: post[index],
+                      ),
                       itemCount: post.length,
                     );
                   } else {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return progreeIndicator;
                   }
                 },
               ))

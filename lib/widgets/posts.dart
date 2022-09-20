@@ -1,20 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/models/post_data.dart';
 import '../providers/user_posts.dart';
+import '../constants.dart';
 
 class Posts extends StatefulWidget {
   // Posts({Key? key, required this.post});
-  const Posts(
-      {Key? key,
-      required this.imageUrl,
-      required this.likes,
-      required this.userName,
-      required this.userPfp,
-      required this.id,
-      required this.index})
-      : super(key: key);
-  final String imageUrl, likes, userName, userPfp, id;
-  final int index;
+  const Posts({Key? key, required this.postData}) : super(key: key);
+  final PostData postData;
 
   @override
   State<Posts> createState() => _PostsState();
@@ -23,15 +16,11 @@ class Posts extends StatefulWidget {
 class _PostsState extends State<Posts> {
   @override
   Widget build(BuildContext context) {
-    final flag = Provider.of<UserPosts>(context).flag;
-    final bookmark = Provider.of<UserPosts>(context, listen:false);
+    final bookmark = Provider.of<UserPosts>(context, listen: false);
     return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(40.30),
-        color: const Color.fromRGBO(230, 238, 250, 1),
-      ),
-      margin: const EdgeInsets.only(left: 10.9, right: 10.9, bottom: 20.9),
-      padding: const EdgeInsets.all(10.9),
+      decoration: postContainerDecoration,
+      margin: postContainerMargin,
+      padding: postContainerPadding,
       child: Stack(alignment: AlignmentDirectional.topCenter, children: [
         Column(
           children: [
@@ -39,22 +28,24 @@ class _PostsState extends State<Posts> {
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(widget.userPfp),
+                  backgroundImage:
+                      NetworkImage(widget.postData.owner!.picture.toString()),
                 ),
                 Expanded(
                     child: ListTile(
-                  title: Text(widget.userName),
+                  title: Text(widget.postData.owner!.firstName.toString() +
+                      widget.postData.owner!.lastName.toString()),
                   subtitle: const Text('@Claire15'),
                 ))
               ],
             ),
-            Container(
+            SizedBox(
               height: MediaQuery.of(context).size.height / 3,
               width: MediaQuery.of(context).size.width / 1.1,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(30.28),
                 child: Image.network(
-                  widget.imageUrl,
+                  widget.postData.image.toString(),
                   fit: BoxFit.fill,
                 ),
               ),
@@ -64,33 +55,27 @@ class _PostsState extends State<Posts> {
         Positioned(
             top: MediaQuery.of(context).size.height / 2.815,
             child: Container(
-              decoration: const BoxDecoration(
-                color: Color.fromRGBO(0, 0, 0, 0.3),
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(30.28),
-                  bottomRight: Radius.circular(30.28),
-                ),
-              ),
+              decoration: postActionButtonDecoration,
               width: MediaQuery.of(context).size.width / 1.11,
               height: MediaQuery.of(context).size.height / 18,
-              padding: const EdgeInsets.symmetric(horizontal: 15),
+              padding: postActionButtonPadding,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const PostButtons(icon: Icons.comment_rounded),
                       const Text(
                         '10',
-                        style: TextStyle(color: Colors.white),
+                        style: postActionButtonTextStyle
                       ),
                       const PostButtons(
                         icon: Icons.favorite_border,
                       ),
                       Text(
-                        widget.likes,
-                        style: const TextStyle(color: Colors.white),
+                        widget.postData.likes.toString(),
+                        style: postActionButtonTextStyle,
                       )
                     ],
                   ),
@@ -102,13 +87,30 @@ class _PostsState extends State<Posts> {
                       ),
                       IconButton(
                           onPressed: () {
-                            bookmark.addBookmarks(widget.id);
-                            bookmark.toggleBookmark(widget.index);
+                            bookmark.toogleBookmarks(widget.postData);
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                widget.postData.isBookmarked
+                                    ? const Text('Added to Bookmark')
+                                    : const Text('Removed from Bookmark'),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                widget.postData.isBookmarked
+                                    ? const Icon(Icons.check,
+                                        color: Colors.green)
+                                    : const Icon(Icons.close,
+                                        color: Colors.red),
+                              ],
+                            )));
+                            // const AlertDialog(title: Text('Bookmark Added'));
                           },
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.bookmark,
-                            color:
-                                flag[widget.index] ? Colors.red : Colors.white,
+                            color: Colors.white,
                           )),
                     ],
                   )

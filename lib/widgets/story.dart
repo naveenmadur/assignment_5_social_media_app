@@ -6,16 +6,22 @@ class Story extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+    return Container(
+      // color: Colors.red,
+      margin: const EdgeInsets.only(bottom: 22, left: 8),
+      // padding: const EdgeInsets.only(bottom: 16,left: 8, right: 8),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children:  [
            CircleAvatar(
             radius: 40,
             child: CircleAvatar(
-              backgroundImage: NetworkImage(imageUrl),
+              backgroundColor: Colors.white,
               radius: 38,
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(imageUrl),
+                radius: 34,
+              ),
             ),
           ),
            Text(name, style: const TextStyle(fontSize: 15), textAlign: TextAlign.center,)

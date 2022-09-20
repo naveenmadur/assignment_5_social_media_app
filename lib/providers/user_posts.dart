@@ -5,32 +5,33 @@ import '../models/post_data.dart';
 
 class UserPosts extends ChangeNotifier {
   List<PostData> postList = [];
-  List<PostData> bookmarkedPost = [];
-  List<bool> flag = [];
+  List<PostData> _bookmarkedPost = [];
+
   Future<void> fetchPostData() async {
     final url = Uri.parse('https://dummyapi.io/data/v1/post?limit=10');
     final response =
         await http.get(url, headers: {'app-id': '6327ee4dd0138c6b8fcf2f8e'});
     final data = jsonDecode(response.body)['data'] as List;
-    final List<PostData> posts = [];
     for (var item in data) {
-      posts.add(PostData.fromJson(item));
-      flag.add(false);
+      postList.add(PostData.fromJson(item));
+    }
+    print(postList[0].owner!.firstName);
+  }
+
+  void toogleBookmarks(PostData postData) {
+    if (postData.isBookmarked == true) {
+      postData.isBookmarked = false;
+      _bookmarkedPost.add(postData);
+    } else {
+      postData.isBookmarked = true;
+      _bookmarkedPost.remove(postData);
     }
     notifyListeners();
-    postList = posts;
-    // print(posts[0].owner!.firstName);
   }
 
-  void addBookmarks(String id){
-    final post = postList.firstWhere((element) => element.id == id);
-    // bookmarkedPost.indexWhere((element) => element.id == id);
-    bookmarkedPost.add(post);
-    notifyListeners();
-  }
-
-  void toggleBookmark(int index){
-    flag[index] = !flag[index];
-    notifyListeners();
+  List<PostData> bookmark() {
+    _bookmarkedPost =
+        postList.where((element) => element.isBookmarked == true).toList();
+    return [..._bookmarkedPost];
   }
 }

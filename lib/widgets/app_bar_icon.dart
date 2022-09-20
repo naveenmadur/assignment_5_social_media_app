@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/constants.dart';
 
 class AppBarIcon extends StatelessWidget {
   const AppBarIcon({
@@ -9,10 +10,10 @@ class AppBarIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: appBarIconPadding,
       child: CircleAvatar(
-          radius: 30,
-          backgroundColor:  const Color.fromRGBO(230, 238, 250, 1),
+          radius: appBarCircleAvatarRadius,
+          backgroundColor:  appBarCircleAvatarColor,
           child: Icon(
             icon,
             color: Colors.black,

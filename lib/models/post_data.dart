@@ -8,6 +8,7 @@ class PostData {
   String? text;
   String? publishDate;
   Owner? owner;
+  bool isBookmarked = false;
 
   PostData(
       {this.id,
@@ -16,7 +17,8 @@ class PostData {
       this.tags,
       this.text,
       this.publishDate,
-      this.owner});
+      this.owner,
+      required this.isBookmarked});
 
   PostData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -26,6 +28,7 @@ class PostData {
     text = json['text'];
     publishDate = json['publishDate'];
     owner = json['owner'] != null ?  Owner.fromJson(json['owner']) : null;
+    isBookmarked;
   }
 
   Map<String, dynamic> toJson() {

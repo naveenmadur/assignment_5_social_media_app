@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/app_bar_icon.dart';
+import '../constants.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({
@@ -10,8 +11,8 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       // color: Colors.red,
-      margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
-      padding: const EdgeInsets.only(top: 21),
+      margin: appBarMargin,
+      padding: appBarPadding,
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -21,7 +22,7 @@ class CustomAppBar extends StatelessWidget {
             ),
             Text(
               'Explore',
-              style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.w600),
+              style: appBarTextStyle,
             ),
             AppBarIcon(
               icon: Icons.notifications_on_rounded,
