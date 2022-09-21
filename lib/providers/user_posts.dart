@@ -9,13 +9,16 @@ class UserPosts extends ChangeNotifier {
 
   Future<void> fetchPostData() async {
     final url = Uri.parse('https://dummyapi.io/data/v1/post?limit=10');
-    final response =
-        await http.get(url, headers: {'app-id': '6327ee4dd0138c6b8fcf2f8e'});
-    final data = jsonDecode(response.body)['data'] as List;
-    for (var item in data) {
-      postList.add(PostData.fromJson(item));
-    }
-    print(postList[0].owner!.firstName);
+    try {
+      final response =
+          await http.get(url, headers: {'app-id': '6327ee4dd0138c6b8fcf2f8e'});
+      final data = jsonDecode(response.body)['data'] as List;
+      for (var item in data) {
+        postList.add(PostData.fromJson(item));
+      }
+    } catch (error) {
+      print(error);
+    } 
   }
 
   void toogleBookmarks(PostData postData) {
@@ -34,4 +37,5 @@ class UserPosts extends ChangeNotifier {
         postList.where((element) => element.isBookmarked == true).toList();
     return [..._bookmarkedPost];
   }
+
 }

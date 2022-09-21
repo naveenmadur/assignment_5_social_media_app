@@ -50,3 +50,9 @@ const Decoration postActionButtonDecoration = BoxDecoration(
 const EdgeInsetsGeometry postActionButtonPadding =  EdgeInsets.symmetric(horizontal: 15);
 
 const TextStyle postActionButtonTextStyle = TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold);
+
+const Text addedToBookmarkText = Text('Added to Bookmark');
+const Text removedFromBookmarkText = Text('Removed from Bookmark');
+const Icon checkIcon = Icon(Icons.check, color: Colors.green);
+const Icon crossIcon =  Icon(Icons.close, color: Colors.red);
+const Icon bookmarkIcon = Icon(Icons.bookmark, color: Colors.white);

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/models/post_data.dart';
 import '../providers/user_posts.dart';
 import '../constants.dart';
+import '../widgets/post_buttons.dart';
 
 class Posts extends StatefulWidget {
   // Posts({Key? key, required this.post});
@@ -94,24 +95,20 @@ class _PostsState extends State<Posts> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 widget.postData.isBookmarked
-                                    ? const Text('Added to Bookmark')
-                                    : const Text('Removed from Bookmark'),
+                                    ? addedToBookmarkText
+                                    : removedFromBookmarkText,
                                 const SizedBox(
                                   width: 20,
                                 ),
                                 widget.postData.isBookmarked
-                                    ? const Icon(Icons.check,
-                                        color: Colors.green)
-                                    : const Icon(Icons.close,
-                                        color: Colors.red),
+                                    ? checkIcon
+                                    : crossIcon,
                               ],
                             )));
                             // const AlertDialog(title: Text('Bookmark Added'));
                           },
-                          icon: const Icon(
-                            Icons.bookmark,
-                            color: Colors.white,
-                          )),
+                          icon: bookmarkIcon,
+                          ),
                     ],
                   )
                 ],
@@ -119,23 +116,5 @@ class _PostsState extends State<Posts> {
             ))
       ]),
     );
-  }
-}
-
-class PostButtons extends StatelessWidget {
-  const PostButtons({
-    Key? key,
-    required this.icon,
-  }) : super(key: key);
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return IconButton(
-        onPressed: () {},
-        icon: Icon(
-          icon,
-          color: Colors.white,
-        ));
   }
 }

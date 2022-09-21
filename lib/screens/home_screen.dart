@@ -16,17 +16,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Future<void> _fetchPostData() async {
-    return Provider.of<UserPosts>(context, listen: false).fetchPostData();
+    return await Provider.of<UserPosts>(context, listen: false).fetchPostData();
   }
 
   Future<void> _fetchOwnerData() async {
-    return Provider.of<OwnerData>(context).fetchOwnerData();
+    return await Provider.of<OwnerData>(context, listen: false)
+        .fetchOwnerData();
   }
 
   @override
   Widget build(BuildContext context) {
     final post = widget.showBookmarks
-        ? Provider.of<UserPosts>(context, listen: false).bookmark()
+        ? Provider.of<UserPosts>(context).bookmark()
         : Provider.of<UserPosts>(context, listen: false).postList;
     final user = Provider.of<OwnerData>(context, listen: false).ownerList;
     return SingleChildScrollView(
@@ -35,24 +36,23 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           SizedBox(
               height: MediaQuery.of(context).size.height / 7,
-              child: FutureBuilder<void>(
+              child: FutureBuilder(
                 future: _fetchOwnerData(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                   return ListView.builder(
-                    itemBuilder: (context, index) => Story(
-                      name: user[index].firstName.toString(),
-                      imageUrl: user[index].picture.toString(),
-                    ),
-                    itemCount: user.length,
-                    scrollDirection: Axis.horizontal,
-                  );
+                      itemBuilder: (context, index) => Story(
+                            name: user[index].firstName.toString(),
+                            imageUrl: user[index].picture.toString(),
+                          ),
+                      itemCount: user.length,
+                      scrollDirection: Axis.horizontal);
                 },
               )),
           SizedBox(
               // color: Colors.red,
               height: MediaQuery.of(context).size.height / 1.55,
-              child: FutureBuilder<void>(
+              child: FutureBuilder(
                 future: _fetchPostData(),
                 builder:
                     (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
